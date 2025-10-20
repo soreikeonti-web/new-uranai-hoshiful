@@ -1,9 +1,10 @@
 // src/sanity/lib/client.js
 import { createClient } from '@sanity/client'
+import { projectId, dataset, apiVersion } from '../env'
 
 export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  apiVersion: '2025-10-20', // 任意の日付でOK
+  projectId,
+  dataset,
+  apiVersion,
   useCdn: false,
 })

@@ -1,8 +1,16 @@
+// src/app/page.js など
+
 import { client } from "../sanity/lib/client";
 
 export default async function Home() {
-  // Sanity から posts データを取得（スキーマに応じて変更可能）
-  const posts = await client.fetch(`*[_type == "post"]{title, _id}`);
+  // ✅ Sanity から post データを取得（スキーマ名が違う場合はここを変更）
+  let posts = [];
+
+  try {
+    posts = await client.fetch(`*[_type == "post"]{title, _id}`);
+  } catch (error) {
+    console.error("Sanityデータ取得エラー:", error);
+  }
 
   return (
     <div style={styles.container}>
@@ -10,7 +18,7 @@ export default async function Home() {
       <p style={styles.text}>Sanity から取得したデータ一覧：</p>
 
       <ul style={styles.list}>
-        {posts.length > 0 ? (
+        {posts && posts.length > 0 ? (
           posts.map((post) => (
             <li key={post._id} style={styles.item}>
               {post.title}
