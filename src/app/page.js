@@ -1,13 +1,12 @@
-import { client } from "../lib/sanity";
+import { client } from "../sanity/lib/client";
 
 export default async function Home() {
-  // ✅ Sanity から posts データを取得（スキーマ名に応じて変更）
+  // Sanity から posts データを取得（スキーマに応じて変更可能）
   const posts = await client.fetch(`*[_type == "post"]{title, _id}`);
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>📡 Sanity 接続テストページ</h1>
-
+      <h1 style={styles.title}>🔮 Sanity 接続テストページ</h1>
       <p style={styles.text}>Sanity から取得したデータ一覧：</p>
 
       <ul style={styles.list}>
