@@ -1,4 +1,6 @@
 // src/app/fortune/page.jsx
+export const dynamic = 'force-dynamic' // ← 常に最新を取得（キャッシュ無効）
+
 import { getFortunes } from '@/sanity/lib/getFortunes'
 
 export default async function FortunePage() {
@@ -10,9 +12,9 @@ export default async function FortunePage() {
         🔮 今日の12星座占い
       </h1>
 
-      {fortunes.length === 0 && <p>まだデータがありません。</p>}
+      {(!fortunes || fortunes.length === 0) && <p>まだデータがありません。</p>}
 
-      {fortunes.map((f) => (
+      {fortunes?.map((f) => (
         <div
           key={f._id}
           style={{
@@ -23,18 +25,21 @@ export default async function FortunePage() {
           }}
         >
           <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>
-            {f.date}｜{f.zodiacSign}
+            {(f.date ?? '日付未設定')}｜{f.zodiacSign}
           </h2>
-          <p style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>{f.summary}</p>
-          <p style={{ marginBottom: '0.5rem' }}>🌟 総合運：{f.overall}</p>
-          <p style={{ marginBottom: '0.5rem' }}>❤️ 恋愛運：{f.love}</p>
-          <p style={{ marginBottom: '0.5rem' }}>💰 金運：{f.money}</p>
-          <p style={{ marginBottom: '0.5rem' }}>💼 仕事運：{f.work}</p>
-          <p style={{ marginBottom: '0.5rem' }}>🎨 ラッキーカラー：{f.luckyColor}</p>
-          <p style={{ marginBottom: '0.5rem' }}>🎁 ラッキーアイテム：{f.luckyItem}</p>
-          <p style={{ fontStyle: 'italic', color: '#555' }}>
-            💫 アファメーション：「{f.affirmation}」
-          </p>
+
+          {f.summary && <p style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>{f.summary}</p>}
+          {f.overall && <p style={{ marginBottom: '0.5rem' }}>🌟 総合運：{f.overall}</p>}
+          {f.love && <p style={{ marginBottom: '0.5rem' }}>❤️ 恋愛運：{f.love}</p>}
+          {f.money && <p style={{ marginBottom: '0.5rem' }}>💰 金運：{f.money}</p>}
+          {f.work && <p style={{ marginBottom: '0.5rem' }}>💼 仕事運：{f.work}</p>}
+          {f.luckyColor && <p style={{ marginBottom: '0.5rem' }}>🎨 ラッキーカラー：{f.luckyColor}</p>}
+          {f.luckyItem && <p style={{ marginBottom: '0.5rem' }}>🎁 ラッキーアイテム：{f.luckyItem}</p>}
+          {f.affirmation && (
+            <p style={{ fontStyle: 'italic', color: '#555' }}>
+              💫 アファメーション：「{f.affirmation}」
+            </p>
+          )}
         </div>
       ))}
     </main>

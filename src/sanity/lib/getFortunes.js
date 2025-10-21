@@ -2,19 +2,23 @@
 import { client } from './client'
 
 export async function getFortunes() {
-  const query = `*[_type == "fortune"] | order(date desc) {
-    _id,
-    zodiacSign,
-    date,
-    summary,
-    overall,
-    love,
-    money,
-    work,
-    luckyColor,
-    luckyItem,
-    affirmation,
-    "slug": slug.current
-  }`
-  return await client.fetch(query)
+  // Draftは除外し、作成日時の新しい順で取得（最新が先頭）
+  const query = `
+    *[_type == "fortune" && !(_id in path("drafts.**"))]
+      | order(_createdAt desc) {
+        _id,
+        zodiacSign,
+        date,
+        summary,
+        overall,
+        love,
+        money,
+        work,
+        luckyColor,
+        luckyItem,
+        affirmation,
+        "slug": slug.current
+      }
+  `
+  return client.fetch(query)
 }
