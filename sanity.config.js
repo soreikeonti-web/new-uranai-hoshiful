@@ -32,7 +32,8 @@ export default defineConfig({
 
   // ✅ プラグイン設定
   plugins: [
-    // structureTool({ structure }), ← 本番エラー防止のため一時的に無効化
+    structureTool(), // ← これでOK（structure は一旦使わない）
     visionTool({ defaultApiVersion: apiVersion }),
   ],
+  
 })
